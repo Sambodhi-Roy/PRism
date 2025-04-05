@@ -1,9 +1,10 @@
 import express from 'express'
-import { fetchRepositoryDataViaLink} from '../controllers/repo.controller.js';
+import { fetchRepositoryDataViaLink, getUserRepositories} from '../controllers/repo.controller.js';
 import { requireAuth } from '@clerk/express';
 
 const repoRouter = express.Router();
 
-repoRouter.get("/repo-info", requireAuth(), fetchRepositoryDataViaLink);
+repoRouter.post("/repo-info", requireAuth(), fetchRepositoryDataViaLink);
+repoRouter.get("/user-repo", requireAuth(),getUserRepositories);
 
 export { repoRouter };

@@ -1,15 +1,19 @@
 import mongoose from "mongoose";
 
 const repositorySchema = new mongoose.Schema({
-  gihubId: {
-    type: Number,
+  githubId: {
+    type: String,
     required: true,
-    unique: true,
+  
   },
-  name: {
+  repoName: {
     type: String,
     required: true,
   },
+  ownerName:{
+    type:String,
+    required:true,
+  }
 });
 
 const Repository = mongoose.model("Repository", repositorySchema);

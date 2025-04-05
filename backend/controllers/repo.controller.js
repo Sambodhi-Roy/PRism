@@ -1,5 +1,7 @@
 import { getAuth } from "@clerk/express";
 import User from "../models/user.model.js";
+import UserRepo from "../models/userRepo.model.js";
+import Repository from "../models/repository.model.js";
 import axios from "axios";
 import { decrypt } from "../utils/crypto.js";
 
@@ -38,8 +40,23 @@ const fetchRepositoryDataViaLink=async(req,res)=>{
             Accept: "application/vnd.github.v3+json",
         },
         });
+        console.log(response);
+        
+
+        //storing the repo data in the database
+        const repo=await Repository.create({
+          githubId: response.data.id,
+          repoName: response.data.name,
+          ownerName: response.data.owner.login,
+
+        });
+        const userRepo=await UserRepo.create({
+          user:user._id,
+          repository:repo._id,
+        })
     
         console.log("response", response.data);
+
         res.status(200).json(response.data);
     } catch (error) {
         console.error("Error fetching repository data:", error);
@@ -48,27 +65,25 @@ const fetchRepositoryDataViaLink=async(req,res)=>{
 
 
 }
-const getUserReposData = async (req, res) => {
+
+
+const getUserRepositories = async (req, res) => {
   try {
     const { userId: clerkId } = getAuth(req);
-    if (!clerkId) {
-      return res.status(401).json({ error: "Clerk id not found." });
-    }
+    if (!clerkId) return res.status(401).json({ error: "Unauthorized" });
 
     const user = await User.findOne({ clerkId });
-    if (!user) {
-      return res.status(404).json({ error: "User not found." });
-    }
+    if (!user) return res.status(404).json({ error: "User not found" });
 
-    const watchedRepositories = await UserRepo.find({ user: user._id })
-      .populate("repository")
-      .then((links) => links.map((link) => link.repository));
+    const userRepos = await UserRepo.find({ user: user._id }).populate("repository");
 
-    res.status(200).json(watchedRepositories);
+    const repos = userRepos.map((ur) => ur.repository); // Extract actual repo data
+
+    res.status(200).json(repos);
   } catch (error) {
-    console.error("Error fetching user's linked repository data:", error);
-    res.status(500).json({ error: "Failed to fetch linked repository data." });
+    console.error("Error fetching user repositories:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
-export { getUserReposData ,fetchRepositoryDataViaLink };
+export {fetchRepositoryDataViaLink ,getUserRepositories};

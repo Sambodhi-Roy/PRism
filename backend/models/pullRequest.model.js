@@ -33,12 +33,12 @@ const pullRequestSchema = new mongoose.Schema({
     type: Date,
   },
   user: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User", // Reference to the User model
     required: true,
   },
   repository: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Repository", // Reference to the Repository model
     required: true,
   },

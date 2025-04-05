@@ -5,6 +5,8 @@ import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import {clerkMiddleware} from "@clerk/express";
 import { authRouter } from "./routes/auth.route.js";
+import { repoRouter } from "./routes/repo.route.js";
+import { prRouter } from "./routes/pr.route.js";
 dotenv.config();
 
 const app = express();
@@ -22,7 +24,11 @@ app.use(cookieParser());
 app.use(clerkMiddleware());
 
 //authentication routes
-app.use("/auth",authRouter)
+app.use("/auth",authRouter);
+//repository routes
+app.use("/repo",repoRouter);
+//pr routes
+app.use("/pr", prRouter);
 
 const PORT = process.env.PORT || 3000;
 
