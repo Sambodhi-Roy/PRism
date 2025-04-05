@@ -1,9 +1,16 @@
+import { Route, Routes } from "react-router-dom"
+import Main from "./pages/Main"
+
+
 function App() {
 
   return (
-    <>
-      <h1>None</h1>
-    </>
+    <div className="w-full h-screen bg-neutral">
+      <Routes>
+        <Route path="/main" element={<Main/>}/>
+      </Routes>
+      <Main/>
+    </div>
   )
 }
 
