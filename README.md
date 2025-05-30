@@ -6,19 +6,19 @@ PRism is a powerful tool designed for developers, open source enthusiasts, and n
 
 ### 🏠 Landing Page
 
-![Homepage](https://raw.githubusercontent.com/Sambodhi-Roy/PRism/main/demos/Landing.png)
+![Homepage](https://raw.githubusercontent.com/Sambodhi-Roy/PRism/main/demos/Landing.jpg)
 
 #### 📖 Dashboard - Selecting Repository
 
-![Onboarding Pages](https://raw.githubusercontent.com/Sambodhi-Roy/PRism/main/demos/Select-Repo.png)
+![Onboarding Pages](https://raw.githubusercontent.com/Sambodhi-Roy/PRism/main/demos/Select-Repo.jpg)
 
 ### 📚 Fetching PRs
 
-![Recommendations](https://raw.githubusercontent.com/Sambodhi-Roy/PRism/main/demos/PRs-fetch.png)
+![Recommendations](https://raw.githubusercontent.com/Sambodhi-Roy/PRism/main/demos/PRs-fetch.jpg)
 
 ### 👥 PR Summary Generation
 
-![Dashboard](https://raw.githubusercontent.com/Sambodhi-Roy/PRism/main/demos/Summary-generated.png)
+![Dashboard](https://raw.githubusercontent.com/Sambodhi-Roy/PRism/main/demos/Summary-generated.jpg)
 
 ## Features
 
