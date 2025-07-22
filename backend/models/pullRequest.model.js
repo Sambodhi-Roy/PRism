@@ -4,7 +4,7 @@ const pullRequestSchema = new mongoose.Schema({
   githubId: {
     type: Number,
     required: true,
-    unique: true, // Unique GitHub identifier for the PR
+     // Unique GitHub identifier for the PR
   },
   prNumber: {
     type: Number,

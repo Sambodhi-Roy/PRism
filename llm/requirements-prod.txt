@@ -40,3 +40,4 @@ google-auth
 # Optional but Recommended
 httpx  # async HTTP client (used in Langchain and FastAPI)
 tqdm   # for loading bar/logs in dev
+langchain_google_genai

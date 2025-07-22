@@ -81,7 +81,7 @@ export const fetchAndProcessPullRequests = async (req, res) => {
           // const ragResponse = await axios.post(`${llmUrl}/summarize`, {
           //   diff_content: diffContent,
           // });
-          const ragResponse = await axios.post(`${llmUrl}/summarize`, {
+          const ragResponse = await axios.post("http://127.0.0.1:8000/summarize", {
             diff_content: diffContent,
           });
           diffSummary = ragResponse.data.summary;
