@@ -48,8 +48,9 @@ const githubCallback = async (req, res) => {
       },
       { upsert: true, new: true }
     );
-
-    const redirectUrl = `http://localhost:5173/dashboard`;
+    console.log("Frontend url:",process.env.FRONTEND_URL);
+    
+    const redirectUrl = `${process.env.FRONTEND_URL}/dashboard`;
     return res.redirect(redirectUrl);
   } catch (err) {
     console.error(err.response?.data || err.message);
