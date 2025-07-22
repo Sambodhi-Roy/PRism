@@ -75,14 +75,19 @@ export const fetchAndProcessPullRequests = async (req, res) => {
       }
 
       let diffSummary = existingPr?.diffSummary || '';
-
+      console.log(`Processing PR #${fetchedPr.number} for repository: ${repoFullName}`);
       if (!diffSummary) {
         try {
+          // const ragResponse = await axios.post(`${llmUrl}/summarize`, {
+          //   diff_content: diffContent,
+          // });
           const ragResponse = await axios.post(`${llmUrl}/summarize`, {
             diff_content: diffContent,
           });
           diffSummary = ragResponse.data.summary;
           console.log(`RAG summary generated for PR #${fetchedPr.number}`);
+          console.log("RAG Summary:", ragResponse.data);
+
         } catch (ragErr) {
           console.error(`RAG summarization failed for PR #${fetchedPr.number}:`, ragErr.message);
         }

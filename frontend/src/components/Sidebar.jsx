@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import useStore from "../../store/auth.store.js";
 import usePRStore from "../../store/prdata.store.js";
+import axiosInstance from "../../utils/axios.js";
 
 const Sidebar = () => {
   const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
@@ -15,6 +16,9 @@ const Sidebar = () => {
   const { isGitHubAuth, isGitHubLoading, setIsGitHubAuth, setIsGitHubLoading } =
     useStore();
   const { getToken } = useAuth();
+  const backendUrl=import.meta.env.VITE_BACKEND_URL;
+  console.log("Backend url:",backendUrl);
+  
 
   function isValidGitHubRepoUrl(url) {
     try {
@@ -50,13 +54,19 @@ const Sidebar = () => {
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:3000/repo/repo-info",
+      // const res = await axiosInstance.post(
+      //   "http://localhost:3000/repo/repo-info",
+      //   {
+      //     repositoryLink: repoLink,
+      //   },
+      //   {
+      //     withCredentials: true,
+      //   }
+      // );
+      const res = await axiosInstance.post(
+        "repo/repo-info",
         {
           repositoryLink: repoLink,
-        },
-        {
-          withCredentials: true,
         }
       );
       message.success("Repository added successfully!");
@@ -70,42 +80,55 @@ const Sidebar = () => {
     }
   };
 
-  const {setPRList} = usePRStore()
+  const {setPRList,setIsPRLoading} = usePRStore()
 
   const handleFetchPRs = async (repoName, repoOwnerName) => {
     try {
       const token = await getToken();
 
       const repoFullName = `${repoOwnerName}/${repoName}`;
-      
-      const response = await axios.post(
-        "http://localhost:3000/pr/fetch-prs",
-        { repoFullName },
-        {
-          withCredentials: true,
-          headers: {
+      setIsPRLoading(true);
+      // const response = await axios.post(
+      //   "http://localhost:3000/pr/fetch-prs",
+      //   { repoFullName },
+      //   {
+      //     withCredentials: true,
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //       'Content-Type': 'application/json'
+      //     }
+      //   }
+      // );
+      const response = await axiosInstance.post("/pr/fetch-prs",{repoFullName},{
+        headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
-        }
-      );
+      });
 
       message.success("PRs fetched successfully!");
       console.log("Fetched PRs:", response.data);
       setPRList(response.data.prs)
+      setIsPRLoading(false);
+      setRepoLink("");
 
     } catch (error) {
       message.error("Failed to fetch PRs");
       console.error("Error fetching PRs:", error);
+      setIsPRLoading(false);
+      if (error.response && error.response.status === 401) {
+        message.error("Unauthorized access. Please log in again.");
+      }
     }
   };
 
   const checkGitHubAuth = async () => {
     try {
       setIsGitHubLoading(true);
-      const res = await axios.get("http://localhost:3000/auth/check-token", {
-        withCredentials: true,
-      });
+      // const res = await axios.get("http://localhost:3000/auth/check-token", {
+      //   withCredentials: true,
+      // });
+      const res =await axiosInstance.get("/auth/check-token");
       setIsGitHubAuth(true);
     } catch (err) {
       setIsGitHubAuth(false);
@@ -116,9 +139,10 @@ const Sidebar = () => {
 
   const fetchRepos = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/repo/user-repo", {
-        withCredentials: true,
-      });
+      // const res = await axios.get("http://localhost:3000/repo/user-repo", {
+      //   withCredentials: true,
+      // });
+      const res=await axiosInstance.get("/repo/user-repo");
       setRepos(res.data);
     } catch (err) {
       message.error("Failed to fetch repositories");
@@ -140,7 +164,7 @@ const Sidebar = () => {
   }
 
   const handleGithubLogin = () => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=http://localhost:3000/auth/github/callback&scope=read:user repo`;
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${backendUrl}/auth/github/callback&scope=read:user repo`;
   };
 
   return (

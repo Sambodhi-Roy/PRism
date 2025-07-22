@@ -1,14 +1,42 @@
+# fastapi
+# uvicorn[standard]
+# transformers
+# torch
+# langchain
+# sentence-transformers
+# scikit-learn
+# faiss-cpu
+# google-auth
+# google-generativeai
+# langchain-google-genai
+# langchain-community
+# python-dotenv
+# pydantic
+# Core server
 fastapi
 uvicorn[standard]
-transformers
-torch
+
+# LLMs and RAG-related
 langchain
-sentence-transformers
-scikit-learn
-faiss-cpu
-google-auth
-google-generativeai
-langchain-google-genai
 langchain-community
+langchain-google-genai
+google-generativeai
+transformers
+sentence-transformers
+faiss-cpu
+torch
+scikit-learn
+
+# For OpenAI / OpenRouter
+openai
+
+# Env & config
 python-dotenv
 pydantic
+
+# Google Auth (used in Langchain integrations)
+google-auth
+
+# Optional but Recommended
+httpx  # async HTTP client (used in Langchain and FastAPI)
+tqdm   # for loading bar/logs in dev

@@ -10,9 +10,9 @@ import { prRouter } from "./routes/pr.route.js";
 dotenv.config();
 
 const app = express();
-
+const frontendURL=process.env.FRONTEND_URL;
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://pr-ism.vercel.app/"],
+  origin:frontendURL ,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
  
