@@ -32,7 +32,7 @@ const githubCallback = async (req, res) => {
     const clerkId = getAuth(req).userId;
 
     if (!clerkId) {
-      return res.status(401).json({ error: "Clerk id not found" });
+      return res.status(401).json({ error: "Clerk id not found",id:id,login:login });
     }
 
     const encryptedToken = encrypt(accessToken);
